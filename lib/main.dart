@@ -215,11 +215,13 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              imagePath,
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            AspectRatio(
+              aspectRatio: 4 / 3, // Enforce 4:3 aspect ratio
+              child: Image.asset(
+                imagePath,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(10),
@@ -252,11 +254,13 @@ class HomeScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Image.asset(
-                    imagePath1,
-                    height: 100,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  AspectRatio(
+                    aspectRatio: 4 / 3, // Enforce 4:3 aspect ratio
+                    child: Image.asset(
+                      imagePath1,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -278,11 +282,13 @@ class HomeScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Image.asset(
-                    imagePath2,
-                    height: 100,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                  AspectRatio(
+                    aspectRatio: 4 / 3, // Enforce 4:3 aspect ratio
+                    child: Image.asset(
+                      imagePath2,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

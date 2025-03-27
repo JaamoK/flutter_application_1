@@ -1,137 +1,209 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const EduKohutApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class EduKohutApp extends StatelessWidget {
+  const EduKohutApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'EduKohut',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 0, 217, 255)),
+        primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'Jaamon ensimmäinen flutter-sovellus'),
+      home: const HomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
-  int _counter = 0;
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    )..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _controller.reverse();
-        }
-      });
-
-    _animation = Tween<double>(begin: 1.0, end: 1.2).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.bounceOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Container(
-        color: Colors.grey[900], // Set the background color to dark grey
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  _incrementCounter(); // Increment the counter when the logo is tapped
-                  _controller.forward(); // Trigger the bounce animation
-                },
-                child: AnimatedBuilder(
-                  animation: _animation,
-                  builder: (context, child) {
-                    return Transform.scale(
-                      scale: _animation.value,
-                      child: child,
-                    );
-                  },
-                  child: Image.asset(
-                    'assets/logo.png', // Replace with the path to your logo
-                    height: 150, // Adjust the height as needed
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'EDUKOHUT',
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                   ),
+                  child: const Text('Tilaa Plus'),
                 ),
-              ),
-              const SizedBox(height: 20), // Add spacing between the logo and text
-              const Text(
-                'You have pushed the button this many times:',
-                style: TextStyle(color: Colors.white), // Set font color to white
-              ),
-              Text(
-                '$_counter',
-                style: (Theme.of(context).textTheme.headlineMedium ?? const TextStyle())
-                    .copyWith(color: Colors.white), // Set font color to white
-              ),
-            ],
-          ),
+                const SizedBox(width: 10),
+                const Icon(
+                  Icons.account_circle,
+                  color: Colors.grey,
+                  size: 30,
+                ),
+              ],
+            ),
+          ],
         ),
+      ),
+      body: Column(
+        children: [
+          // Categories Menu
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: const [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text('Etusivu'),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text('Uutiset'),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text('Urheilu'),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text('Viihde'),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text('Plus'),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text('Sää'),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          // JUURI NYT Section
+          Container(
+            color: Colors.yellow,
+            padding: const EdgeInsets.all(10),
+            child: const Text(
+              'JUURI NYT',
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          // News Highlights Section
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _buildNewsHighlight('Highlight 1'),
+                _buildNewsHighlight('Highlight 2'),
+                _buildNewsHighlight('Highlight 3'),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          // Main News Section
+          Expanded(
+            child: ListView.builder(
+              itemCount: 9,
+              itemBuilder: (context, index) {
+                return _buildNewsArticle(
+                  'assets/news_placeholder.png', // Replace with your test images
+                  'News Title $index',
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Etusivu',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.fiber_new),
+            label: 'Tuoreimmat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.trending_up),
+            label: 'Luetuimmat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: 'ED-Palat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            label: 'Valikko',
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Helper Widget for News Highlights
+  Widget _buildNewsHighlight(String title) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(title),
+    );
+  }
+
+  // Helper Widget for News Articles
+  Widget _buildNewsArticle(String imagePath, String title) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            imagePath,
+            height: 150,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

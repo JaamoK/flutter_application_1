@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Categories Menu
+          // Top Menu
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -145,6 +145,32 @@ class HomeScreen extends StatelessWidget {
                 }
               },
             ),
+          ),
+        ],
+      ),
+      // Bottom Menu
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Etusivu',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.fiber_new),
+            label: 'Tuoreimmat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.trending_up),
+            label: 'Luetuimmat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: 'ED-Palat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            label: 'Valikko',
           ),
         ],
       ),

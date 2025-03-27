@@ -33,6 +33,9 @@ class HomeScreen extends StatelessWidget {
       return GeneratedAssets.images[random.nextInt(GeneratedAssets.images.length)];
     }
 
+    // Determine padding based on screen width
+    double horizontalPadding = MediaQuery.of(context).size.width > 800 ? 350 : 0;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -73,80 +76,83 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          // Top Menu
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildCategoryButton('Etusivu'),
-                _buildCategoryButton('Uutiset'),
-                _buildCategoryButton('Urheilu'),
-                _buildCategoryButton('Viihde'),
-                _buildCategoryButton('Plus'),
-                _buildCategoryButton('Sää'),
-              ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+        child: Column(
+          children: [
+            // Top Menu
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _buildCategoryButton('Etusivu'),
+                  _buildCategoryButton('Uutiset'),
+                  _buildCategoryButton('Urheilu'),
+                  _buildCategoryButton('Viihde'),
+                  _buildCategoryButton('Plus'),
+                  _buildCategoryButton('Sää'),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          // JUURI NYT Section
-          Container(
-            color: Colors.yellow,
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'JUURI NYT: ',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    '"Breaking: Major Storm Expected to Hit the Coast and Cause Severe Damage Across the Region!"',
-                    style: const TextStyle(
-                      color: Colors.black,
+            const SizedBox(height: 10),
+            // JUURI NYT Section
+            Container(
+              color: Colors.yellow,
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'JUURI NYT: ',
+                    style: TextStyle(
+                      color: Colors.red,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
-                    softWrap: true,
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Text(
+                      '"Breaking: Major Storm Expected to Hit the Coast and Cause Severe Damage Across the Region!"',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      softWrap: true,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          // Main News Section
-          Expanded(
-            child: ListView.builder(
-              itemCount: 20,
-              itemBuilder: (context, index) {
-                if (index % 3 == 0) {
-                  // Style 1: Big picture with title
-                  return _buildStyle1Article(
-                    getRandomImage(),
-                    _getFakeNewsTitle(index),
-                  );
-                } else if (index % 3 == 1) {
-                  // Style 2: Two articles side by side
-                  return _buildStyle2Articles(
-                    getRandomImage(),
-                    getRandomImage(),
-                    _getFakeNewsTitle(index),
-                    _getFakeNewsTitle(index + 1),
-                  );
-                } else {
-                  // Style 3: Title only
-                  return _buildStyle3Article(_getFakeNewsTitle(index));
-                }
-              },
+            const SizedBox(height: 10),
+            // Main News Section
+            Expanded(
+              child: ListView.builder(
+                itemCount: 20,
+                itemBuilder: (context, index) {
+                  if (index % 3 == 0) {
+                    // Style 1: Big picture with title
+                    return _buildStyle1Article(
+                      getRandomImage(),
+                      _getFakeNewsTitle(index),
+                    );
+                  } else if (index % 3 == 1) {
+                    // Style 2: Two articles side by side
+                    return _buildStyle2Articles(
+                      getRandomImage(),
+                      getRandomImage(),
+                      _getFakeNewsTitle(index),
+                      _getFakeNewsTitle(index + 1),
+                    );
+                  } else {
+                    // Style 3: Title only
+                    return _buildStyle3Article(_getFakeNewsTitle(index));
+                  }
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       // Bottom Menu
       bottomNavigationBar: BottomNavigationBar(

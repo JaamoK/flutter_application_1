@@ -1,4 +1,6 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'generated_assets.dart';
 
 void main() {
   runApp(const EduKohutApp());
@@ -24,6 +26,13 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final random = Random();
+
+    // Function to get a random image from the generated assets
+    String getRandomImage() {
+      return GeneratedAssets.images[random.nextInt(GeneratedAssets.images.length)];
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -48,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero, // Makes the button rectangular
+                      borderRadius: BorderRadius.zero,
                     ),
                   ),
                   child: const Text('Tilaa Plus'),
@@ -70,31 +79,13 @@ class HomeScreen extends StatelessWidget {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: const [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text('Etusivu', style: TextStyle(fontWeight: FontWeight.bold), ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text('Uutiset', style: TextStyle(fontWeight: FontWeight.bold), ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text('Urheilu', style: TextStyle(fontWeight: FontWeight.bold), ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text('Viihde', style: TextStyle(fontWeight: FontWeight.bold), ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text('Plus', style: TextStyle(fontWeight: FontWeight.bold), ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text('Sää', style: TextStyle(fontWeight: FontWeight.bold), ),
-                ),
+              children: [
+                _buildCategoryButton('Etusivu'),
+                _buildCategoryButton('Uutiset'),
+                _buildCategoryButton('Urheilu'),
+                _buildCategoryButton('Viihde'),
+                _buildCategoryButton('Plus'),
+                _buildCategoryButton('Sää'),
               ],
             ),
           ),
@@ -104,7 +95,7 @@ class HomeScreen extends StatelessWidget {
             color: Colors.yellow,
             padding: const EdgeInsets.all(10),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
                   'JUURI NYT: ',
@@ -116,27 +107,15 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    '"Breaking: Major Storm Expected to Hit the Coast!"', // Example title
+                    '"Breaking: Major Storm Expected to Hit the Coast and Cause Severe Damage Across the Region!"',
                     style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
-                    overflow: TextOverflow.ellipsis, // Ensures the title doesn't overflow
+                    softWrap: true,
                   ),
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10),
-          // News Highlights Section
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildNewsHighlight('Highlight 1'),
-                _buildNewsHighlight('Highlight 2'),
-                _buildNewsHighlight('Highlight 3'),
               ],
             ),
           ),
@@ -149,14 +128,14 @@ class HomeScreen extends StatelessWidget {
                 if (index % 3 == 0) {
                   // Style 1: Big picture with title
                   return _buildStyle1Article(
-                    'assets/news_placeholder.png',
+                    getRandomImage(),
                     _getFakeNewsTitle(index),
                   );
                 } else if (index % 3 == 1) {
                   // Style 2: Two articles side by side
                   return _buildStyle2Articles(
-                    'assets/news_placeholder1.png',
-                    'assets/news_placeholder2.png',
+                    getRandomImage(),
+                    getRandomImage(),
                     _getFakeNewsTitle(index),
                     _getFakeNewsTitle(index + 1),
                   );
@@ -169,44 +148,27 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Etusivu',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fiber_new),
-            label: 'Tuoreimmat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.trending_up),
-            label: 'Luetuimmat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'ED-Palat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'Valikko',
-          ),
-        ],
-      ),
     );
   }
 
-  // Helper Widget for News Highlights
-  Widget _buildNewsHighlight(String title) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(10),
+  Widget _buildCategoryButton(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: TextButton(
+        onPressed: () {
+          print('$title button clicked');
+        },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
       ),
-      child: Text(title),
     );
   }
 
@@ -235,6 +197,7 @@ class HomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
+                softWrap: true,
               ),
             ),
           ],
@@ -268,6 +231,7 @@ class HomeScreen extends StatelessWidget {
                     child: Text(
                       title1,
                       style: const TextStyle(fontSize: 14),
+                      softWrap: true,
                     ),
                   ),
                 ],
@@ -293,6 +257,7 @@ class HomeScreen extends StatelessWidget {
                     child: Text(
                       title2,
                       style: const TextStyle(fontSize: 14),
+                      softWrap: true,
                     ),
                   ),
                 ],
@@ -320,12 +285,14 @@ class HomeScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
+            softWrap: true,
           ),
         ),
       ),
     );
   }
 
+  // Fake news titles
   String _getFakeNewsTitle(int index) {
     final titles = [
       "Breaking: Major Storm Expected to Hit the Coast",

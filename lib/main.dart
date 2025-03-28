@@ -34,7 +34,14 @@ class HomeScreen extends StatelessWidget {
     }
 
     // Determine padding based on screen width
-    double horizontalPadding = MediaQuery.of(context).size.width > 800 ? 350 : 0;
+    double horizontalPadding = MediaQuery.of(context).size.width > 1200
+        ? 300 // Large PC screens
+        : MediaQuery.of(context).size.width > 800
+            ? 100 // Tablets and medium PC screens
+            : 16; // Phones
+
+    // Determine font scaling based on screen width
+    double fontSizeScaling = MediaQuery.of(context).size.width > 800 ? 1.2 : 1.0;
 
     return Scaffold(
       appBar: AppBar(
@@ -43,12 +50,12 @@ class HomeScreen extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'EDUKOHUT',
               style: TextStyle(
                 color: Colors.red,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 20 * fontSizeScaling,
               ),
             ),
             Row(
@@ -63,7 +70,10 @@ class HomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.zero,
                     ),
                   ),
-                  child: const Text('Tilaa Plus'),
+                  child: Text(
+                    'Tilaa Plus',
+                    style: TextStyle(fontSize: 14 * fontSizeScaling),
+                  ),
                 ),
                 const SizedBox(width: 15),
                 const Icon(
@@ -85,12 +95,12 @@ class HomeScreen extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _buildCategoryButton('Etusivu'),
-                  _buildCategoryButton('Uutiset'),
-                  _buildCategoryButton('Urheilu'),
-                  _buildCategoryButton('Viihde'),
-                  _buildCategoryButton('Plus'),
-                  _buildCategoryButton('Sää'),
+                  _buildCategoryButton('Etusivu', fontSizeScaling),
+                  _buildCategoryButton('Uutiset', fontSizeScaling),
+                  _buildCategoryButton('Urheilu', fontSizeScaling),
+                  _buildCategoryButton('Viihde', fontSizeScaling),
+                  _buildCategoryButton('Plus', fontSizeScaling),
+                  _buildCategoryButton('Sää', fontSizeScaling),
                 ],
               ),
             ),
@@ -102,21 +112,21 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'JUURI NYT: ',
                     style: TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 16 * fontSizeScaling,
                     ),
                   ),
                   Expanded(
                     child: Text(
                       '"Breaking: Major Storm Expected to Hit the Coast and Cause Severe Damage Across the Region!"',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 16 * fontSizeScaling,
                       ),
                       softWrap: true,
                     ),
@@ -135,6 +145,7 @@ class HomeScreen extends StatelessWidget {
                     return _buildStyle1Article(
                       getRandomImage(),
                       _getFakeNewsTitle(index),
+                      fontSizeScaling,
                     );
                   } else if (index % 3 == 1) {
                     // Style 2: Two articles side by side
@@ -143,10 +154,14 @@ class HomeScreen extends StatelessWidget {
                       getRandomImage(),
                       _getFakeNewsTitle(index),
                       _getFakeNewsTitle(index + 1),
+                      fontSizeScaling,
                     );
                   } else {
                     // Style 3: Title only
-                    return _buildStyle3Article(_getFakeNewsTitle(index));
+                    return _buildStyle3Article(
+                      _getFakeNewsTitle(index),
+                      fontSizeScaling,
+                    );
                   }
                 },
               ),
@@ -183,7 +198,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryButton(String title) {
+  Widget _buildCategoryButton(String title, double fontSizeScaling) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: TextButton(
@@ -195,17 +210,17 @@ class HomeScreen extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
+            fontSize: 14 * fontSizeScaling,
           ),
         ),
       ),
     );
   }
 
-  // Style 1: Big picture with title
-  Widget _buildStyle1Article(String imagePath, String title) {
+  Widget _buildStyle1Article(String imagePath, String title, double fontSizeScaling) {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Card(
@@ -227,9 +242,9 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 16 * fontSizeScaling,
                 ),
                 softWrap: true,
               ),
@@ -240,9 +255,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Style 2: Two articles side by side
   Widget _buildStyle2Articles(
-      String imagePath1, String imagePath2, String title1, String title2) {
+      String imagePath1, String imagePath2, String title1, String title2, double fontSizeScaling) {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -266,7 +280,7 @@ class HomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       title1,
-                      style: const TextStyle(fontSize: 14),
+                      style: TextStyle(fontSize: 14 * fontSizeScaling),
                       softWrap: true,
                     ),
                   ),
@@ -294,7 +308,7 @@ class HomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       title2,
-                      style: const TextStyle(fontSize: 14),
+                      style: TextStyle(fontSize: 14 * fontSizeScaling),
                       softWrap: true,
                     ),
                   ),
@@ -307,8 +321,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Style 3: Title only
-  Widget _buildStyle3Article(String title) {
+  Widget _buildStyle3Article(String title, double fontSizeScaling) {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Card(
@@ -319,9 +332,9 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 16,
+              fontSize: 16 * fontSizeScaling,
             ),
             softWrap: true,
           ),
@@ -330,7 +343,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Fake news titles
   String _getFakeNewsTitle(int index) {
     final titles = [
       "Breaking: Major Storm Expected to Hit the Coast",
